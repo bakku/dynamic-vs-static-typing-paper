@@ -1,0 +1,3 @@
+class StandardFile
+
+end
