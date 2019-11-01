@@ -6,14 +6,15 @@
 
 (deftest test-download-repo
   (testing "should download directory"
-    (let [path (-> (download-repo "https://github.com/bakku/dotfiles")
-                   io/as-file)]
+    (let [path (io/as-file (io-helper/temp-dir))
+          repo (download-repo "https://github.com/bakku/dotfiles" path)]
       (is (.exists path))
-      (is (.isDirectory path)))))
+      (is (.isDirectory path))
+      (io-helper/delete-directory path))))
 
 (deftest test-filter-files
   (testing "should return vector of files that match suffix"
-    (let [path (.toString (io-helper/temp-dir))]
+    (let [path (io-helper/temp-dir)]
       (.createNewFile (io/as-file (str path "/" "one.go")))
       (.createNewFile (io/as-file (str path "/" "two.rb")))
       (.mkdir (io/as-file (str path "/" "hello_world")))

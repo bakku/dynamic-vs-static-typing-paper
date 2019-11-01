@@ -1,23 +1,55 @@
 (ns test-ratio-analyzer.core
-  (:require [test-ratio-analyzer.git-repo :as git-repo]
+  (:require [test-ratio-analyzer.io-helper :as io-helper]
+            [test-ratio-analyzer.git-repo :as git-repo]
             [test-ratio-analyzer.ruby :as ruby])
   (:gen-class))
 
-(defn repo-code-files
-  [repo-url code-file-suffix]
-  (-> (git-repo/download-repo repo-url)
+(def supported-languages
+  {"ruby"   {:suffix        ".rb"
+             :fn-test-pred  ruby/is-test?
+             :fn-line-count ruby/count-lines}
+   "golang" {:suffix ".go"}})
+
+(defn- get-repo-code-files
+  [repo-url save-at code-file-suffix]
+  (-> (git-repo/download-repo repo-url save-at)
       (git-repo/filter-files code-file-suffix)))
+
+(defn- analyze-tests
+  [files language]
+  (let [test-files (filter (:fn-test-pred language) files)]
+    {:test-files (count test-files)
+     :test-loc   (reduce + (map (:fn-line-count language) test-files))}))
+
+(defn- analyze-implementation
+  [files language]
+  (let [implementation-files (remove (:fn-test-pred language) files)]
+    {:implementation-files (count implementation-files)
+     :implementation-loc   (reduce + (map (:fn-line-count language) implementation-files))}))
+
+(defn- analyze-repo
+  [repo-url language]
+  (io-helper/remove-after [tmp (io-helper/temp-dir)]
+    (let [code-files              (get-repo-code-files repo-url tmp (:suffix language))
+          test-analysis           (analyze-tests code-files language)
+          implementation-analysis (analyze-implementation code-files language)]
+      (merge test-analysis implementation-analysis))))
+
+(defn- print-analysis
+  [analysis]
+  (println "Test files:"           (:test-files analysis))
+  (println "Test LOC:"             (:test-loc analysis))
+  (println "Implementation files:" (:implementation-files analysis))
+  (println "Implementation LOC:"   (:implementation-loc analysis))
+  (println "Ratio:"                (/ (:test-loc analysis) (float (:implementation-loc analysis)))))
 
 (defn -main
   [& args]
-  (let [code-files (repo-code-files (first args) ".rb")
-        test-files (filter ruby/is-test? code-files)
-        test-loc (reduce + (map ruby/count-lines test-files))
-        implementation-files (filter #(not (ruby/is-test? %)) code-files)
-        implementation-loc (reduce + (map ruby/count-lines implementation-files))]
-    (println "Test files:" (count test-files))
-    (println "Test LOC:" test-loc)
-    (println "Implementation files:" (count implementation-files))
-    (println "Implementation LOC:" implementation-loc)
-    (println "Ratio:" (/ test-loc (float implementation-loc)))
-    (System/exit 0))) ;; because we use clojure.java.shell which uses futures
+  (let [repo-url (first args)
+        language (second args)]
+    (if (contains? supported-languages language)
+      (do
+        (-> (analyze-repo repo-url (get supported-languages language))
+            print-analysis)
+        (System/exit 0)) ;; because we use clojure.java.shell which uses futures
+      (println "Unsupported language given"))))

@@ -13,32 +13,18 @@
   [url]
   (str (remove-trailing-slash url) "/archive/master.zip"))
 
-(defn- download-file
+(defn download-repo
   [src dest]
   (with-open [in  (io/input-stream (repo-zip-archive src))
               out (io/output-stream "temp.zip")]
     (io/copy in out))
   (io-helper/unzip-file "temp.zip" dest)
-  (.delete (io/as-file "temp.zip")))
-
-(defn download-repo
-  [src]
-  (let [dest (io-helper/temp-dir)]
-    (download-file src dest)
-    (.toString dest)))
-
-(defn- all-files-rec
-  [file]
-  (if (.isDirectory file)
-    (map all-files-rec (.listFiles file))
-    [file]))
+  (.delete (io/as-file "temp.zip"))
+  dest)
 
 (defn- all-files
   [file]
-  (-> (io/as-file file)
-      all-files-rec
-      flatten
-      vec))
+  (file-seq (io/as-file file)))
 
 (defn filter-files
   [path suffix]
