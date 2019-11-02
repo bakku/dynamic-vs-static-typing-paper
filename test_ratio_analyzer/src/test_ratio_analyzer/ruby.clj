@@ -6,7 +6,9 @@
   [file]
   (or (io-helper/file-ends-with? file "_test.rb")
       (io-helper/file-ends-with? file "_spec.rb")
-      (io-helper/file-contains-line? file #"^(Rspec\.)?describe")))
+      (io-helper/file-contains-line? file #"^(Rspec\.)?describe")
+      (io-helper/file-contains-line? file #"class.+<.+TestCase")
+      (io-helper/file-contains-line? file #"class.+<.+Minitest::Test")))
 
 (defn- ignored-line?
   [line]

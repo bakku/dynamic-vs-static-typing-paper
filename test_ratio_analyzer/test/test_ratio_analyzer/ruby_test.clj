@@ -10,6 +10,10 @@
     (is (is-test? (test-file "ruby" "ruby_spec.rb"))))
   (testing "should return true for files that contain describe ... do"
     (is (is-test? (test-file "ruby" "random_test_file.rb"))))
+  (testing "should return true for files with classes inheriting from TestCase"
+    (is (is-test? (test-file "ruby" "test_case.rb"))))
+  (testing "should return true for files with classes inheriting from Minitest"
+    (is (is-test? (test-file "ruby" "minitest.rb"))))
   (testing "should return false otherwise"
     (is (not (is-test? (test-file "ruby" "standard_file.rb"))))))
 
