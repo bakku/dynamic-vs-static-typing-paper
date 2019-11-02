@@ -1,14 +1,17 @@
 (ns test-ratio-analyzer.core
   (:require [test-ratio-analyzer.io-helper :as io-helper]
             [test-ratio-analyzer.git-repo :as git-repo]
-            [test-ratio-analyzer.ruby :as ruby])
+            [test-ratio-analyzer.ruby :as ruby]
+            [test-ratio-analyzer.golang :as golang])
   (:gen-class))
 
 (def supported-languages
   {"ruby"   {:suffix        ".rb"
              :fn-test-pred  ruby/is-test?
              :fn-line-count ruby/count-lines}
-   "golang" {:suffix ".go"}})
+   "golang" {:suffix ".go"
+             :fn-test-pred  golang/is-test?
+             :fn-line-count golang/count-lines}})
 
 (defn- get-repo-code-files
   [repo-url save-at code-file-suffix]

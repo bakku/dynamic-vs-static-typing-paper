@@ -2,9 +2,18 @@
   (:require [clojure.java.shell :as shell]
             [clojure.java.io :as io]))
 
+(defn- symlink?
+  [path]
+  (->> (into-array java.lang.String [])
+       (java.nio.file.Paths/get path)
+       java.nio.file.Files/isSymbolicLink))
+
 (defn delete-directory
   [path]
   (let [dir (io/as-file path)]
+    (doseq [file (file-seq dir)
+            :when (symlink? (.toString file))]
+      (io/delete-file file))
     (doseq [file (file-seq dir)
             :when (.isFile file)]
       (io/delete-file file))

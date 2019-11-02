@@ -13,8 +13,7 @@
 (defn- ignored-line?
   [line]
   (or (clojure.string/blank? line)
-      (clojure.string/starts-with? line "#")
-      (clojure.string/starts-with? line "require")))
+      (clojure.string/starts-with? line "#")))
 
 (defn count-lines
   [file]

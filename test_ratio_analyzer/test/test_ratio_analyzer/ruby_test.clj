@@ -19,4 +19,4 @@
 
 (deftest test-count-lines
   (testing "should return correct amount of lines"
-    (is (= 5 (count-lines (test-file "ruby" "random_test_file.rb"))))))
+    (is (= 6 (count-lines (test-file "ruby" "random_test_file.rb"))))))
