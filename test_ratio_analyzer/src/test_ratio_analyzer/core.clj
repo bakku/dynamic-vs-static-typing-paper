@@ -3,19 +3,23 @@
             [test-ratio-analyzer.git-repo :as git-repo]
             [test-ratio-analyzer.ruby :as ruby]
             [test-ratio-analyzer.golang :as golang]
-            [test-ratio-analyzer.python :as python])
+            [test-ratio-analyzer.python :as python]
+            [test-ratio-analyzer.clojure :as clojure])
   (:gen-class))
 
 (def supported-languages
-  {"ruby"   {:suffix        ".rb"
-             :fn-test-pred  ruby/is-test?
-             :fn-line-count ruby/count-lines}
-   "golang" {:suffix ".go"
-             :fn-test-pred  golang/is-test?
-             :fn-line-count golang/count-lines}
-   "python" {:suffix ".py"
-             :fn-test-pred  python/is-test?
-             :fn-line-count python/count-lines}})
+  {"ruby"    {:suffix        ".rb"
+              :fn-test-pred  ruby/is-test?
+              :fn-line-count ruby/count-lines}
+   "golang"  {:suffix ".go"
+              :fn-test-pred  golang/is-test?
+              :fn-line-count golang/count-lines}
+   "python"  {:suffix ".py"
+              :fn-test-pred  python/is-test?
+              :fn-line-count python/count-lines}
+   "clojure" {:suffix ".clj"
+              :fn-test-pred clojure/is-test?
+              :fn-line-count clojure/count-lines}})
 
 (defn- get-repo-code-files
   [repo-url save-at code-file-suffix]

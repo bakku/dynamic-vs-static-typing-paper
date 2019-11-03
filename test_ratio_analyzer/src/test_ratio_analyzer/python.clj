@@ -6,7 +6,8 @@
 
 (defn is-test?
   [file]
-  (or (io-helper/file-starts-with? file "test_") (io-helper/file-ends-with? file "_test.py")))
+  (or (io-helper/file-starts-with? file "test_")
+      (io-helper/file-ends-with? file "_test.py")))
 
 (defn- ignored-line?
   [line]
