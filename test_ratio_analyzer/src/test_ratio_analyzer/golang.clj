@@ -5,12 +5,18 @@
 
 (defn is-test?
   [file]
-  (or (io-helper/file-ends-with? file "_test.go")))
+  (io-helper/file-ends-with? file "_test.go"))
 
 (defn- ignored-line?
   [line]
   (or (string/blank? line)
-      (string/starts-with? line "//")))
+      (string/starts-with? line "//")
+      (and (string/starts-with? line "/*") (string/ends-with? line "*/"))))
+
+(defn- block-comment-in-line?
+  [line]
+  (and (string/includes? line "/*")
+       (not (string/includes? line "*/"))))
 
 (defn- filter-block-comments
   [lines]
@@ -19,9 +25,10 @@
          in-block-comment false]
     (match [remaining in-block-comment]
       [([] :seq) _]          filtered
-      [([h & t] :seq) false] (if (string/starts-with? h "/*")
-                               (recur t filtered true)
-                               (recur t (conj filtered h) false))
+      [([h & t] :seq) false] (cond
+                               (string/starts-with? h "/*") (recur t filtered true)
+                               (block-comment-in-line? h)   (recur t (conj filtered h) true)
+                               :else                        (recur t (conj filtered h) false))
       [([h & t] :seq) true]  (if (string/ends-with? h "*/")
                                (recur t filtered false)
                                (recur t filtered true)))))
@@ -30,6 +37,6 @@
   [file]
   (->> (io-helper/all-lines file)
        (mapv clojure.string/trim)
-       (filter-block-comments)
        (remove ignored-line?)
+       (filter-block-comments)
        count))

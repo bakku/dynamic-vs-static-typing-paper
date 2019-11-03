@@ -11,4 +11,4 @@
 
 (deftest test-count-lines
   (testing "should return correct amount of lines"
-    (is (= 4 (count-lines (test-file "golang" "math.go"))))))
+    (is (= 5 (count-lines (test-file "golang" "math.go"))))))
