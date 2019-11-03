@@ -1,9 +1,24 @@
 # Test Ratio Analyzer
 
+This small tool analyzes a github repository and calculates the test to production code ratio.
+
+## Build
+
+```
+lein uberjar
+```
+
 ## Usage
 
-FIXME: explanation
+```
+java -jar analyzer.jar https://github.com/bakku/annoyme ruby
+```
 
-## Examples
+The following languages are supported:
 
-...
+* Ruby
+* Clojure
+* Java
+* Haskell
+* Go
+* Python
