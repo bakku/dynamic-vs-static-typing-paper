@@ -1,10 +1,11 @@
 (ns test-ratio-analyzer.core
   (:require [test-ratio-analyzer.io-helper :as io-helper]
-            [test-ratio-analyzer.git-repo :as git-repo]
-            [test-ratio-analyzer.ruby :as ruby]
-            [test-ratio-analyzer.golang :as golang]
-            [test-ratio-analyzer.python :as python]
-            [test-ratio-analyzer.clojure :as clojure])
+            [test-ratio-analyzer.git-repo  :as git-repo]
+            [test-ratio-analyzer.ruby      :as ruby]
+            [test-ratio-analyzer.golang    :as golang]
+            [test-ratio-analyzer.python    :as python]
+            [test-ratio-analyzer.clojure   :as clojure]
+            [test-ratio-analyzer.java      :as java])
   (:gen-class))
 
 (def supported-languages
@@ -19,7 +20,10 @@
               :fn-line-count python/count-lines}
    "clojure" {:suffix ".clj"
               :fn-test-pred clojure/is-test?
-              :fn-line-count clojure/count-lines}})
+              :fn-line-count clojure/count-lines}
+   "java"    {:suffix ".java"
+              :fn-test-pred java/is-test?
+              :fn-line-count java/count-lines}})
 
 (defn- get-repo-code-files
   [repo-url save-at code-file-suffix]

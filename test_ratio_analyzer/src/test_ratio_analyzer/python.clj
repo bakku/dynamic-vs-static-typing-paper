@@ -1,6 +1,5 @@
 (ns test-ratio-analyzer.python
-  (:require [clojure.java.io :as io]
-            [clojure.string :as string]
+  (:require [clojure.string :as string]
             [test-ratio-analyzer.io-helper :as io-helper]
             [test-ratio-analyzer.comment-detection :as comments]))
 

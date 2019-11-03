@@ -1,6 +1,5 @@
 (ns test-ratio-analyzer.ruby
-  (:require [test-ratio-analyzer.io-helper :as io-helper]
-            [clojure.java.io :as io]))
+  (:require [test-ratio-analyzer.io-helper :as io-helper]))
 
 (defn is-test?
   [file]

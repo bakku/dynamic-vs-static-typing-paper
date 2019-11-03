@@ -1,11 +1,11 @@
-(ns test-ratio-analyzer.golang
+(ns test-ratio-analyzer.java
   (:require [clojure.string :as string]
             [test-ratio-analyzer.io-helper :as io-helper]
             [test-ratio-analyzer.comment-detection :as comments]))
 
 (defn is-test?
   [file]
-  (io-helper/file-ends-with? file "_test.go"))
+  (io-helper/file-ends-with? file "Test.java"))
 
 (defn- ignored-line?
   [line]
