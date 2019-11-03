@@ -5,7 +5,8 @@
             [test-ratio-analyzer.golang    :as golang]
             [test-ratio-analyzer.python    :as python]
             [test-ratio-analyzer.clojure   :as clojure]
-            [test-ratio-analyzer.java      :as java])
+            [test-ratio-analyzer.java      :as java]
+            [test-ratio-analyzer.haskell   :as haskell])
   (:gen-class))
 
 (def supported-languages
@@ -23,7 +24,10 @@
               :fn-line-count clojure/count-lines}
    "java"    {:suffix ".java"
               :fn-test-pred java/is-test?
-              :fn-line-count java/count-lines}})
+              :fn-line-count java/count-lines}
+   "haskell" {:suffix ".hs"
+              :fn-test-pred haskell/is-test?
+              :fn-line-count haskell/count-lines}})
 
 (defn- get-repo-code-files
   [repo-url save-at code-file-suffix]
