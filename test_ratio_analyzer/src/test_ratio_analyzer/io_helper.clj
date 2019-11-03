@@ -55,13 +55,13 @@
   [file prefix]
   (-> (filename-from-path file)
       (.toLowerCase)
-      (clojure.string/starts-with? prefix)))
+      (clojure.string/starts-with? (.toLowerCase prefix))))
 
 (defn file-ends-with?
   [file suffix]
   (-> (filename-from-path file)
       (.toLowerCase)
-      (clojure.string/ends-with? suffix)))
+      (clojure.string/ends-with? (.toLowerCase suffix))))
 
 (defn all-lines
   [file]
