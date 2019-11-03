@@ -44,10 +44,21 @@
        (java.nio.file.Files/createTempDirectory nil)
        (.toString)))
 
+(defn- filename-from-path
+  [path]
+  (-> (.toString path)
+      (clojure.string/split  #"/")
+      reverse
+      first))
+
+(defn file-starts-with?
+  [file prefix]
+  (-> (filename-from-path file)
+      (clojure.string/starts-with? prefix)))
+
 (defn file-ends-with?
   [file suffix]
-  (-> file
-      (.toString)
+  (-> (filename-from-path file)
       (clojure.string/ends-with? suffix)))
 
 (defn all-lines
