@@ -17,7 +17,7 @@
 
 \begin{document}
 
-\title{A comparison of the test to production code ratio of dynamically and statically typed languages}
+\title{A comparison of the test to production code ratio between static and dynamic typing}
 
 \author{\IEEEauthorblockN{Christian Paling}
 \IEEEauthorblockA{\textit{University of Applied Sciences Regensburg} \\
@@ -27,7 +27,7 @@ christian.paling@googlemail.com}}
 \maketitle
 
 \begin{abstract}
-There are many arguments for and against static or dynamic typing, a common one being that when writing a software system with a statically typed system the programmer needs to employ less testing than when using a dynamically typed language. While the theoretical argument is fairly easy to follow the question is whether actual software systems do reflect this mindset. This paper presents a study that analyses 20 software projects and compares the test to production code ratio of both types of typing. In the results, it can be observed that projects using dynamically typed languages do have a higher test to production code ratio than their counterparts.
+There are many arguments concerning the discussion of static vs dynamic typing. A common one is that software systems using statically typed languages require less testing than projects based on dynamically typed languages. While the theoretical argument is fairly easy to follow, the question is whether actual software systems do reflect this mindset. This paper presents a study that analyses 20 software projects and compares the test to production code ratio of both types of typing. In the results, it can be observed that projects using dynamically typed languages do have a higher test to production code ratio than their counterparts.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -54,11 +54,11 @@ The structure of this paper is organized as follows. Section 2 describes the met
 
 \section{Methodology}
 
-In order to have the results as unbiased as possible, we selected three different languages for both dynamically and statically typed languages. On the dynamically typed side Ruby, Python, and Clojure, and as statically typed languages Java, Haskell, and Go.
+In order to have results as unbiased as possible, three different languages for both dynamic and static typing were selected. On the dynamically typed side Ruby, Python, and Clojure, and as statically typed languages Java, Haskell, and Go.
 
-Afterwards we chose ten fairly popular open-source repositories from Github for both types of languages, for Ruby and Go four repositories each, for the rest of the languages three repositories. The chosen projects are employed in different domains like web applications, programming libraries, or command-line tools.
+Afterwards ten fairly popular open-source repositories were chosen from Github for both types of languages, for Ruby and Go four repositories each, for the rest of the languages three repositories. The chosen projects are employed in different domains like web applications, programming libraries, or command-line tools.
 
-For each project, the lines of test code (TLOC), as well as the line of production code (PLOC), were analysed using a self-written tool\footnote{\url{https://github.com/bakku/dynamic-vs-static-typing-paper/tree/master/test\_ratio\_analyzer}} and compared by calculating the following ratio:
+For each project, the lines of test code (TLOC), as well as the lines of production code (PLOC), were analysed using a self-written tool\footnote{\url{https://github.com/bakku/dynamic-vs-static-typing-paper/tree/master/test\_ratio\_analyzer}} and compared by calculating the following ratio:
 
 \begin{equation}
 TLOC / PLOC = RATIO
@@ -144,11 +144,11 @@ When comparing these results to the numbers of statically typed languages in tab
 
 \section{Discussions}
 
-While the basic result of the study may not be surprising, the big difference between the two types of typing provides interesting insights. The test to production code ratio is utilized in other works and studies as well. While it is not possible to define a correct and definite number for this metric across all projects and languages, it is commonly regarded to be at least \textit{1:1} i.e. for each line of production code there should be one line of test code.\cite{deursen_refactoring_test_code} With this number in mind, nearly every project using statically typed languages that were analysed in this study would be undertested. Especially for a heavily used project in the software industry like the Moby (Docker) technology, this implies that important tools of a company's infrastructure are based on undertested software.
+While the basic result of the study may not be surprising, the big difference between the two types of typing provides interesting insights. The test to production code ratio is utilized in other works and studies as well. While it is not possible to define an ideal number for this metric across all projects and languages, it is commonly regarded that the ratio should at least be \textit{1:1} i.e. for each line of production code there should be one line of test code.\cite{deursen_refactoring_test_code} With this number in mind, nearly every project using statically typed languages that were analysed in this study would be undertested. Especially for a heavily used project in the software industry like the Moby (Docker) technology, this implies that important tools of a company's infrastructure are based on undertested software.
 
 \section{Threats to Validity}
 
-The validity of this study rests on the diverse selection of languages and projects for its analysis. However, there are some potential threats to its validity. Firstly, the decision whether a certain piece of code should be counted as production or test code is not always easy. Some projects ship small libraries that are exclusively used in the test cases but do not expose patterns of test code and were therefore counted as production code in this study. Furthermore, the test to production code ratio might not be sufficient to come to conclusions concerning the actual amount of testing that the project employs. Different types of testing will result in different amounts of test coverage. While unit tests produce a lot of code but do not provide a high level of test coverage, integration tests cover larger parts of code.
+The validity of this study rests on the diverse selection of languages and projects for its analysis. However, there are some potential threats to its validity. Firstly, the decision whether a certain piece of code should be counted as production or test code is not always easy. Some projects contain small libraries that are exclusively used in the test cases but do not expose patterns of test code and were therefore counted as production code in this study. Furthermore, the test to production code ratio might not be sufficient to come to conclusions concerning the actual amount of testing that the project employs. Different types of testing will result in different amounts of test coverage. While unit tests produce a lot of code but do not provide a high level of test coverage, integration tests cover larger parts of code.
 
 \section{Related Work}
 
