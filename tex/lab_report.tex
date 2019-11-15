@@ -1,0 +1,169 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{ctable}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+    
+% Increase height of cells in tables a bit
+\renewcommand{\arraystretch}{1.2}
+
+\begin{document}
+
+\title{A comparison of the test to production code ratio of dynamically and statically typed languages}
+
+\author{\IEEEauthorblockN{Christian Paling}
+\IEEEauthorblockA{\textit{University of Applied Sciences Regensburg} \\
+Regensburg, Germany \\
+christian.paling@googlemail.com}}
+
+\maketitle
+
+\begin{abstract}
+There are many arguments for and against static or dynamic typing, a common one being that when writing a software system with a statically typed system the programmer needs to employ less testing than when using a dynamically typed language. While the theoretical argument is fairly easy to follow the question is whether actual software systems do reflect this mindset. This paper presents a study that analyses 20 software projects and compares the test to production code ratio of both types of typing. In the results, it can be observed that projects using dynamically typed languages do have a higher test to production code ratio than their counterparts.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Type Systems, Programming Languages
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+The question of whether dynamic typing is better or worse than static typing is a long and ongoing discussion in the software industry. Typical arguments in favor of statically typed languages (see \cite{cardelli_luca_type_systems}) are for example:
+
+\begin{itemize}
+    \item Easier debugging of programming errors
+    \item Higher productivity in large teams of programmers through the negotiation of interfaces
+    \item Eliminating certain security breaches by default
+\end{itemize}
+
+Another common argument is that by compiling a statically typed program successfully the programmer can be sure that no incorrectly typed data is being passed through the system. On the other hand, a programmer using a dynamically typed language will need to write software tests to prove that his software is working as correctly as a statically typed program. Therefore software systems using dynamically typed languages will need more tests than programs implemented with statically typed languages.\cite{cardelli_luca_type_systems}
+
+This paper analyses whether this argument is not only valid in theory but can be observed in reality. The test to production code ratios of open-source repositories of both types of languages are being calculated and compared to examine the previously stated theory.
+
+The results show that software systems using dynamically typed languages do have a higher test to production code ratio by a significant margin.
+
+The structure of this paper is organized as follows. Section 2 describes the methodology used for this study. Section 3 presents the results of the analysis which is followed by Section 4 that discusses these results. Afterwards possible threats to validity are pointed out in Section 5 and related work is presented in Section 6. Lastly, Section 7 concludes this paper by discussing possible future work.
+
+\section{Methodology}
+
+In order to have the results as unbiased as possible, we selected three different languages for both dynamically and statically typed languages. On the dynamically typed side Ruby, Python, and Clojure, and as statically typed languages Java, Haskell, and Go.
+
+Afterwards we chose ten fairly popular open-source repositories from Github for both types of languages, for Ruby and Go four repositories each, for the rest of the languages three repositories. The chosen projects are employed in different domains like web applications, programming libraries, or command-line tools.
+
+For each project, the lines of test code (TLOC), as well as the line of production code (PLOC), were analysed using a self-written tool\footnote{\url{https://github.com/bakku/dynamic-vs-static-typing-paper/tree/master/test\_ratio\_analyzer}} and compared by calculating the following ratio:
+
+\begin{equation}
+TLOC / PLOC = RATIO
+\end{equation}
+
+The tool identifies tests by recognizing common patterns of test files for each language, e.g. in Go a test has to end with \textit{\_test.go}, and removes comments and newlines from each file to count the number of lines of actual code.
+
+By comparing the ratio of the dynamically typed languages with the statically typed languages it is possible to get an idea of the number of tests that are being written.
+
+\section{Detailed Results}
+
+In table \ref{dynamicType} the results for the dynamically typed languages are outlined in detail. It is important to note that all results were acquired on 03 November 2019. Therefore the numbers might vary at a different point in time. It can be seen that all projects have a ratio between about \textit{0.7 - 2.4} and average at about \textit{1.2}. This means that for every 10 lines of production code 12 lines of test code are written.
+
+\begin{table}[htbp]
+\caption{Dynamically typed languages}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Language} & \textbf{Project} & \textbf{TLOC} & \textbf{PLOC} & \textbf{Ratio} \\
+\hline
+\textit{Ruby} & Mastodon & 20084 & 28868 & 0.6957 \\
+\cline{2-5}
+& Gitlab & 363082 & 224295 & 1.6188 \\
+\cline{2-5}
+& Sinatra & 11819 & 5006 & 2.3610 \\
+\cline{2-5}
+& Sidekiq & 4541 & 4222 & 1.0756 \\
+\hline
+\textit{Python} & Flask & 5606 & 6799 & 0.8245 \\
+\cline{2-5}
+& Sentry & 86115 & 142347 & 0.6050 \\
+\cline{2-5}
+& YAPF & 9648 & 5756 & 1.6762 \\
+\hline
+\textit{Clojure} & Metabase & 37618 & 45753 & 0.8222 \\
+\cline{2-5}
+& Compojure & 628 & 555 & 1.1315 \\
+\cline{2-5}
+& Riemann & 7610 & 10015 & 0.7560 \\
+\specialrule{.1em}{.05em}{.05em}
+\textbf{Average Ratio} & \multicolumn{4}{|c|}{1.1567} \\
+\hline
+\end{tabular}
+\label{dynamicType}
+\end{center}
+\end{table}
+
+When comparing these results to the numbers of statically typed languages in table \ref{staticType} clear differences are apparent. Every project except one has a ratio lower than \textit{1.0}. With an average ratio of \textit{0.4}, three times the amount of test code was written using dynamically typed languages compared to statically typed projects.
+
+\begin{table}[htbp]
+\caption{Statically typed languages}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Language} & \textbf{Project} & \textbf{TLOC} & \textbf{PLOC} & \textbf{Ratio} \\
+\hline
+\textit{Golang} & Gin & 5480 & 3831 & 1.4304 \\
+\cline{2-5}
+& Gogs & 733 & 36122 & 0.0203 \\
+\cline{2-5}
+& Terraform & 126286 & 1003481 & 0.1259 \\
+\cline{2-5}
+& Moby (Docker) & 84152 & 951399 & 0.0885 \\
+\hline
+\textit{Java} & Jenkins & 55738 & 102093 & 0.5460 \\
+\cline{2-5}
+& Guava & 221843 & 288438 & 0.7691 \\
+\cline{2-5}
+& Spark & 3093 & 7064 & 0.4379 \\
+\hline
+\textit{Haskell} & Pandoc & 9512 & 53922 & 0.1764 \\
+\cline{2-5}
+& Haxl & 1052 & 2639 & 0.3986 \\
+\cline{2-5}
+& Semantic & 2189 & 28321 & 0.0773 \\
+\specialrule{.1em}{.05em}{.05em}
+\textbf{Average Ratio} & \multicolumn{4}{|c|}{0.4070} \\
+\hline
+\end{tabular}
+\label{staticType}
+\end{center}
+\end{table}
+
+\section{Discussions}
+
+While the basic result of the study may not be surprising, the big difference between the two types of typing provides interesting insights. The test to production code ratio is utilized in other works and studies as well. While it is not possible to define a correct and definite number for this metric across all projects and languages, it is commonly regarded to be at least \textit{1:1} i.e. for each line of production code there should be one line of test code.\cite{deursen_refactoring_test_code} With this number in mind, nearly every project using statically typed languages that were analysed in this study would be undertested. Especially for a heavily used project in the software industry like the Moby (Docker) technology, this implies that important tools of a company's infrastructure are based on undertested software.
+
+\section{Threats to Validity}
+
+The validity of this study rests on the diverse selection of languages and projects for its analysis. However, there are some potential threats to its validity. Firstly, the decision whether a certain piece of code should be counted as production or test code is not always easy. Some projects ship small libraries that are exclusively used in the test cases but do not expose patterns of test code and were therefore counted as production code in this study. Furthermore, the test to production code ratio might not be sufficient to come to conclusions concerning the actual amount of testing that the project employs. Different types of testing will result in different amounts of test coverage. While unit tests produce a lot of code but do not provide a high level of test coverage, integration tests cover larger parts of code.
+
+\section{Related Work}
+
+Dynamic and static typing have been compared in numerous works before, however, no works were found that focused as specifically on the comparison of testing as this study does. Generally, the results of the studies performed on dynamic vs static typing vary.
+
+Stefan Hanenberg performed an experiment that evaluated the development time and quality of a programming task performed by two distinct groups. One group was using a dynamically typed language while the other group employed static typing. As a result, static typing had a negative impact on the development time of the task and did not show any significant difference in the quality of the solution that was implemented.\cite{hanenberg_typing_experiment}
+
+Another study, performed by Ray et al. analysed 729 projects and tried to find various effects of language choices on the quality of software. Among the categories with which they labeled programming languages was dynamic and static typing. While not significant, the researchers found that projects using statically typed languages were less prone to have defects than dynamically typed languages.\cite{ray_large_scale_study}
+
+
+\section{Conclusion and Future Work}
+
+In this paper, a study was presented which analysed multiple open-source repositories and compared the ratio of test to production code. The study was able to show that projects using dynamically typed languages had a significantly higher ratio of test to production code than projects written with statically typed languages. An interesting future experiment could verify and analyse the results of this study on a deeper level. By combining additional metrics like test coverage, it would be more clear whether projects using static typing do tend to be more undertested than projects with dynamic typing. It could also be studied whether this difference in the number of tests reflects on the amount of bugs that each system had. Finally, a survey could shed some light for the reasons of the considerably smaller amount of tests in projects with static typing. Why do developers using statically typed languages test less? Might they be relying too much on their type system?
+
+\bibliographystyle{./bibliography/IEEEtran}
+\bibliography{/bibliography/lab_report}
+
+\end{document}
